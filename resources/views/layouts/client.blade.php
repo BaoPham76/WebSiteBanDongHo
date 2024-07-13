@@ -87,8 +87,8 @@
                         <ul class="option">
                            <li id="search" class="search">
                               <form method="GET" action="{{ route('user.search') }}">
-                                 <input class="search-submit" type="submit" value="">
-                                 <input class="search-input" placeholder="Enter your search term..." type="text" value="" name="keyword">
+                                 {{-- <input class="search-submit" type="submit" value=""> --}}
+                                 <input class="search-input" placeholder="Bạn muốn mua gì..." type="text" value="" name="keyword">
                               </form>
                            </li>
                            <li class="option-cart">
