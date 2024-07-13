@@ -54,7 +54,7 @@ class ProfileService
         try {
             $user = Auth::guard('admin')->user();
             $response = Http::withHeaders([
-                'token' => '24d5b95c-7cde-11ed-be76-3233f989b8f3'
+                'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
                 ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province');
             $data = json_decode($response->body(), true);
             foreach ($data['data'] as $item) {
@@ -65,7 +65,7 @@ class ProfileService
             }
             
             $response = Http::withHeaders([
-                'token' => '24d5b95c-7cde-11ed-be76-3233f989b8f3'
+                'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
                 ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', [
                     'province_id' => old('city') ?? $user->address->city,
                 ]);
@@ -78,7 +78,7 @@ class ProfileService
                 }
                 
                 $response = Http::withHeaders([
-                    'token' => '24d5b95c-7cde-11ed-be76-3233f989b8f3'
+                    'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
                     ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', [
                         'district_id' => old('district') ?? $user->address->district,
                     ]);

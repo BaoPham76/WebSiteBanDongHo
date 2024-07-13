@@ -1,7 +1,7 @@
 $(document).ready(function(){
     $.ajaxSetup({
         headers: {
-            token: "24d5b95c-7cde-11ed-be76-3233f989b8f3"
+            token: "5ba2f299-3fee-11ef-8de7-a6386691fa55"
         },
     });
 

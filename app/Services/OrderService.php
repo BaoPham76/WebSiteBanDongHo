@@ -126,7 +126,7 @@ class OrderService
         $infomationUser['payment_name'] = $infoUserOfOrder->payment_name;
         $infomationUser['orders_transport_fee'] = $infoUserOfOrder->orders_transport_fee;
         $response = Http::withHeaders([
-            'token' => '24d5b95c-7cde-11ed-be76-3233f989b8f3'
+            'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
         ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province');
         $data = json_decode($response->body(), true);
         foreach ($data['data'] as $item) {
@@ -135,7 +135,7 @@ class OrderService
             }
         }
         $response = Http::withHeaders([
-            'token' => '24d5b95c-7cde-11ed-be76-3233f989b8f3'
+            'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
         ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/district', [
             'province_id' => $infoUserOfOrder->order_city,
         ]);
@@ -147,7 +147,7 @@ class OrderService
         }
 
         $response = Http::withHeaders([
-            'token' => '24d5b95c-7cde-11ed-be76-3233f989b8f3'
+            'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
         ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/ward', [
             'district_id' => $infoUserOfOrder->order_district,
         ]);
