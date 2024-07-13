@@ -1,0 +1,14 @@
+# Tự động xử lý dòng kết thúc cho các file văn bản
+* text=auto
+
+# Định nghĩa cách hiển thị sự khác biệt (diff) cho các loại file khác nhau
+*.blade.php diff=html
+*.css diff=css
+*.html diff=html
+*.md diff=markdown
+*.php diff=php
+
+# Các file và thư mục được bỏ qua khi xuất (export-ignore)
+/.github export-ignore
+CHANGELOG.md export-ignore
+.styleci.yml export-ignore
