@@ -14,6 +14,9 @@ class TextSystemConst
     public const CREATE_FAILED = "Thêm thất bại hãy thử lại";
     public const UPDATE_SUCCESS = "Chỉnh sửa thông tin thành công";
     public const UPDATE_FAILED = "Chỉnh sửa thất bại hãy thử lại";
+    public const RESTORE_SUCCESS = "Khôi phục thông tin thành công";
+    public const RESTORE_FAILED = "Khôi phục thất bại thất bại hãy thử lại";
+    public const NOT_FOUND = "Không tìm thấy thông tin";
     public const CHANGE_PASSWORD = [
         'success' => 'Thay đổi mật khẩu thành công',
         'error' => 'Thực hiện thất bại vui lòng thử lại'

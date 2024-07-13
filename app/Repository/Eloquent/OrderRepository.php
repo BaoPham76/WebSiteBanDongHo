@@ -87,6 +87,16 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
         ->first();
     }
 
+    public function findTrashed($id)
+    {
+        return $this->model->onlyTrashed()->find($id);
+    }
+
+    public function restore($order)
+    {
+        return $order->restore();
+    }
+
     public function getRevenue()
     {
         return DB::table('orders')->where('order_status', 3)->sum('total_money');

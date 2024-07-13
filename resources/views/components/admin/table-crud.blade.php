@@ -1,7 +1,7 @@
 @props(['headers', 'list', 'actions', 'routes'])
 <div class="card">
     <!-- /.card-header -->
-    @if ($actions['create'] || $actions['createExcel'] || $actions['deleteAll'])
+    @if ($actions['create'] || $actions['createExcel'] || $actions['deleteAll'] || $actions['trash'])
         <div class="card-header">
         <div class="row">
             <div class="col-6 d-flex">
@@ -15,6 +15,17 @@
                 @if ($actions['createExcel'])
                     <button class="btn btn-success ml-1">Excel</button>
                 @endif
+
+                @if ($actions['trash'])
+                    <a 
+                        href="{{ (isset($routes['trash'])) ? route($routes['trash']) : '#'}}" 
+                        class="btn btn-primary next-link__js">
+                        <i class="fa fa-trash"></i>
+                        Thùng rác
+                    </a>
+                @endif
+
+
             </div>
             <div class="col-6 text-right">
                 @if ($actions['deleteAll'])
@@ -31,7 +42,7 @@
                     @foreach ($headers as $header)
                         <th>{{ $header['text'] }}</th>
                     @endforeach
-                    @if($actions['viewDetail'] || $actions['edit'] || $actions['delete'])
+                    @if($actions['viewDetail'] || $actions['edit'] || $actions['delete'] || $actions['restore'])
                         <th>{{ $actions['text'] }}</th>
                     @endif
                 </tr>
@@ -67,7 +78,7 @@
                                 @endif
                             </td>
                         @endforeach
-                        @if($actions['viewDetail'] || $actions['edit'] || $actions['delete'])
+                        @if($actions['viewDetail'] || $actions['edit'] || $actions['delete'] || $actions['restore'])
                             <td>
                                 @if ($actions['edit'])
                                     <a href="{{ isset($routes['edit']) ? route($routes['edit'], $item->id) : '#' }}" id="edit-customer" class="btn btn-primary next-link__js">
@@ -86,6 +97,16 @@
                                     </form>
                                     <button id="delete__js" class="btn btn-danger" url="{{route($routes['delete'])}}">
                                         <i class="fas fa-trash"></i>
+                                    </button>
+                                @endif
+
+                                @if ($actions['restore'])
+                                    <form style="display: inline;" action="{{ route($routes['restore'])}}" method="POST" id="form-restore__js">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $item->id }}">
+                                    </form>
+                                    <button id="restore__js" class="btn btn-success">
+                                        <i class="fas fa-undo"></i>
                                     </button>
                                 @endif
                             </td>

@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Helpers\TextSystemConst;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreUserRequest;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
 use App\Services\UserService;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -63,4 +65,24 @@ class UserController extends Controller
     {
         return $this->userService->delete($request);
     }
+
+    public function trash(Request $request)
+    {
+        if (count($this->userService->trash()) > 0) {
+            return view('admin.trash.index', $this->userService->trash());
+        }
+
+        return redirect()->route('admin.users_index');
+        
+    }
+    public function restore(Request $request)
+    {
+        return $this->userService->restore($request);
+        
+    }
+    
+
+
+
+
 }

@@ -79,6 +79,8 @@ class PaymentService
                 'deleteAll'     => false,
                 'delete'        => false,
                 'viewDetail'    => false,
+                'trash'         => false,
+                'restore'       => false,
             ],
             'routes' => [
                 'edit' => 'admin.payments_edit',

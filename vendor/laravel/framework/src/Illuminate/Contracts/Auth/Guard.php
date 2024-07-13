@@ -25,6 +25,7 @@ interface Guard
      */
     public function user();
 
+
     /**
      * Get the ID for the currently authenticated user.
      *

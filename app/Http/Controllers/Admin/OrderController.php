@@ -43,4 +43,16 @@ class OrderController extends Controller
     {
         return $this->orderService->delete($request);
     }
+
+    public function trash(Request $request)
+    {
+        
+            return view('admin.trash.index', $this->orderService->trash());
+
+    }
+    public function restore(Request $request)
+    {
+        return $this->orderService->restore($request);    
+    }
+    
 }

@@ -56,6 +56,8 @@ class BrandService
                 'deleteAll'     => true,
                 'delete'        => true,
                 'viewDetail'    => false,
+                'trash'         => false,
+                'restore'       => false,
             ],
             'routes' => [
                 'create' => 'admin.brands_create',

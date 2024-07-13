@@ -32,6 +32,16 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
             ->orderBy('id', 'DESC')
             ->get();
     }
+    public function findTrashed($id)
+    {
+        return $this->model->onlyTrashed()->find($id);
+    }
+
+    public function restore($user)
+    {
+        return $user->restore();
+    }
+
 
     public function admins()
     {

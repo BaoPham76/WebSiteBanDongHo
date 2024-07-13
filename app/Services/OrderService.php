@@ -9,6 +9,8 @@ use App\Models\ProductSize;
 use App\Repository\Eloquent\OrderRepository;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -100,10 +102,13 @@ class OrderService
                 'deleteAll'     => false,
                 'delete'        => true,
                 'viewDetail'    => false,
+                'trash'         => true,
+                'restore'       => false,
             ],
             'routes' => [
                 'delete' => 'admin.orders_delete',
                 'edit' => 'admin.orders_edit',
+                'trash' => 'admin.orders_trash',
             ],
             'list' => $list,
         ];
@@ -113,6 +118,114 @@ class OrderService
             'tableCrud' => $tableCrud,
         ];
     }
+
+    public function trash()
+    {
+        // Get list order
+        $list = Order::onlyTrashed()->get();
+        $tableCrud = [
+            'headers' => [
+                [
+                    'text' => 'Mã HD',
+                    'key' => 'id',
+                ],
+                [
+                    'text' => 'Tên KH',
+                    'key' => 'user_name',
+                ],
+                [
+                    'text' => 'Email',
+                    'key' => 'user_email',
+                ],
+                [
+                    'text' => 'Tổng Tiền',
+                    'key' => 'total_money',
+                    'format' => true,
+                ],
+                [
+                    'text' => 'PT Thanh Toán',
+                    'key' => 'payment_name',
+                ],
+                [
+                    'text' => 'Ngày Đặt Hàng',
+                    'key' => 'created_at',
+                ],
+                [
+                    'text' => 'Trạng Thái Đơn',
+                    'key' => 'order_status',
+                    'status' => [
+                        [
+                            'text' => 'Chờ Xử Lý',
+                            'value' => Order::STATUS_ORDER['wait'],
+                            'class' => 'badge badge-warning'
+                        ],
+                        [
+                            'text' => 'Đang Giao Hàng',
+                            'value' => Order::STATUS_ORDER['transporting'],
+                            'class' => 'badge badge-info'
+                        ],
+                        [
+                            'text' => 'Đã Hủy',
+                            'value' => Order::STATUS_ORDER['cancel'],
+                            'class' => 'badge badge-danger'
+                        ],
+                        [
+                            'text' => 'Đã Nhận Hàng',
+                            'value' => Order::STATUS_ORDER['received'],
+                            'class' => 'badge badge-success'
+                        ],
+                    ],
+                ],
+            ],
+            'actions' => [
+                'text'          => "Thao Tác",
+                'create'        => false,
+                'createExcel'   => false,
+                'edit'          => false,
+                'deleteAll'     => false,
+                'delete'        => false,
+                'viewDetail'    => false,
+                'trash'         => false,
+                'restore'       => true,
+            ],
+            'routes' => [
+                'restore' => 'admin.orders_restore',
+                
+            ],
+            'list' => $list,
+        ];
+
+        return [
+            'title' => TextLayoutTitle("order_trash"),
+            'tableCrud' => $tableCrud,
+        ];
+    }
+
+    public function restore(Request $request)
+    {
+        try {
+            $order = $this->orderRepository->findTrashed($request->id); // Tìm order đã bị soft delete
+            if (!$order) {
+                return response()->json(['status' => 'error', 'message' => TextSystemConst::NOT_FOUND], 200);
+            }
+
+            if ($this->orderRepository->restore($order)) {
+                // Update restored_by with the ID of the authenticated admin
+                $adminId = Auth::guard('admin')->id(); // Assuming 'admin' guard is correctly configured
+                $this->orderRepository->update($order, ['restored_by' => $adminId]);
+                
+                return response()->json(['status' => 'success', 'message' => TextSystemConst::RESTORE_SUCCESS], 200);
+                
+            }
+
+            return response()->json(['status' => 'failed', 'message' => TextSystemConst::RESTORE_FAILED], 200);
+        } catch (Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => TextSystemConst::SYSTEM_ERROR], 200);
+        }
+    }
+
 
     public function edit(Order $order)
     {

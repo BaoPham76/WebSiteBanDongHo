@@ -43,6 +43,10 @@ Route::middleware(['auth.admin', 'admin.verified'])->group(function () {
         Route::get('edit/{user}', [UserController::class, "edit"])->name('admin.users_edit');
         Route::post('update/{user}', [UserController::class, "update"])->name('admin.users_update');
         Route::post('delete', [UserController::class, "delete"])->name('admin.users_delete');
+        Route::get('trash', [UserController::class, "trash"])->name('admin.users_trash');  //new 1
+        Route::post('restore', [UserController::class, 'restore'])->name('admin.users_restore');//new 2
+
+
     });
 
     Route::group(['prefix' => 'profile'], function(){
@@ -59,6 +63,7 @@ Route::middleware(['auth.admin', 'admin.verified'])->group(function () {
         Route::get('update/{product}', [ProductController::class, "edit"])->name('admin.products_edit');
         Route::post('update/{product}', [ProductController::class, "update"])->name('admin.products_update');
         Route::post('delete', [ProductController::class, "delete"])->name('admin.products_delete');
+        
 
         Route::get('get-categories-by-parent', [ProductController::class, "getCategoryByParent"])->name('admin.category_by_parent');
 
@@ -112,6 +117,9 @@ Route::middleware(['auth.admin', 'admin.verified'])->group(function () {
         Route::get('edit/{order}', [OrderController::class, "edit"])->name('admin.orders_edit');
         Route::post('update/{order}', [OrderController::class, "update"])->name('admin.orders_update');
         Route::post('delete', [OrderController::class, "delete"])->name('admin.orders_delete');
+        Route::get('trash', [OrderController::class, "trash"])->name('admin.orders_trash'); //new 1
+        Route::post('restore', [OrderController::class, 'restore'])->name('admin.orders_restore');
+//new 2
     });
 
     Route::group(['prefix' => 'sizes'], function(){

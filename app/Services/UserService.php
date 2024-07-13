@@ -97,11 +97,14 @@ class UserService
                 'deleteAll'     => false,
                 'delete'        => true,
                 'viewDetail'    => false,
+                'trash'         => true,
+                'restore'       => false,
             ],
             'routes' => [
                 'create' => 'admin.users_create',
                 'delete' => 'admin.users_delete',
                 'edit' => 'admin.users_edit',
+                'trash' => 'admin.users_trash',
             ],
             'list' => $list,
         ];
@@ -293,6 +296,68 @@ class UserService
             return [];
         }
         
+    }
+
+    public function trash()
+    {
+        // Get list customers
+        $list = User::onlyTrashed()->get();
+        $tableCrud = [
+            'headers' => [
+                [
+                    'text' => 'Mã KH',
+                    'key' => 'id',
+                ],
+                [
+                    'text' => 'Tên Khách Hàng',
+                    'key' => 'name',
+                ],
+                [
+                    'text' => 'Email',
+                    'key' => 'email',
+                ],
+                [
+                    'text' => 'Số Điện Thoại',
+                    'key' => 'phone_number',
+                ],
+                [
+                    'text' => 'Trạng Thái',
+                    'key' => 'active',
+                    'status' => [
+                        [
+                            'text' => 'Hoạt động',
+                            'value' => 1,
+                            'class' => 'badge badge-success'
+                        ],
+                        [
+                            'text' => 'Vô hiệu hóa',
+                            'value' => 0,
+                            'class' => 'badge badge-danger'
+                        ],
+                    ],
+                ],
+            ],
+            'actions' => [
+                'text'          => "Thao Tác",
+                'create'        => false,
+                'createExcel'   => false,
+                'edit'          => false,
+                'deleteAll'     => false,
+                'delete'        => false,
+                'viewDetail'    => false,
+                'trash'         => false,
+                'restore'       => true,
+            ],
+            'routes' => [
+                'restore' => 'admin.users_restore',
+            ],
+            'list' => $list,
+        ];
+
+        return [
+            'title' => TextLayoutTitle("user_trash"),
+            'tableCrud' => $tableCrud,
+        ];
     }
 
     /** 
@@ -592,6 +657,36 @@ class UserService
             return redirect()->route('admin.users_index')->with('error', TextSystemConst::UPDATE_FAILED);
         }
     }
+
+
+    public function restore(Request $request)
+    {
+        try {
+            $user = $this->userRepository->findTrashed($request->id); // Tìm user đã bị soft delete
+            if (!$user) {
+                return response()->json(['status' => 'error', 'message' => TextSystemConst::NOT_FOUND], 200);
+            }
+
+            if ($this->userRepository->restore($user)) {
+                $this->userRepository->update(
+                    $user,
+                    ['restored_by' => Auth::guard('admin')->user()->id]
+                );
+                
+                return response()->json(['status' => 'success', 'message' => TextSystemConst::RESTORE_SUCCESS], 200);
+                
+            }
+
+            return response()->json(['status' => 'failed', 'message' => TextSystemConst::RESTORE_FAILED], 200);
+        } catch (Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => TextSystemConst::SYSTEM_ERROR], 200);
+        }
+    }
+
+
+
 
      /** 
      * delete the user in the database.

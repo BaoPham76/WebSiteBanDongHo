@@ -110,6 +110,71 @@ $(document).ready(function(){
   });
 });
 
+// Confirm restore
+$(document).on('click', '#restore__js', function(){
+  let id = $(this).closest('tr').attr('id'); // Lấy ID của item cần phục hồi (nếu cần)
+  let url = $(this).siblings('form#form-restore__js').attr('action'); // Lấy URL action của form phục hồi
+  Swal.fire({
+      title: "Bạn có chắc muốn phục hồi?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'CÓ',
+      cancelButtonText: 'KHÔNG',
+  }).then((result) => {
+      if (result.isConfirmed) {
+          // Hiển thị loading
+          $('#loading__js').css('display', 'flex');
+
+          // Gọi API phục hồi người dùng
+          $.ajax({
+              url: url,
+              type: 'POST',
+              data: {
+                  id: id // Truyền ID người dùng cần phục hồi
+              }
+          }).done((response) => {
+              // Ẩn loading
+              $('#loading__js').css('display', 'none');
+
+              // Nếu phục hồi thành công
+              if (response.status == 'success') {
+                  // Hiển thị toast message thành công
+                  fire(toast, 'success', response.message);
+                  // Cập nhật hoặc làm mới bảng dữ liệu
+                  //table.rows(`#${id}`).remove().draw();
+                  setTimeout(() => {
+                    location.reload();
+                }, 2000);
+                  
+              } else if (response.status == 'failed') {
+                  // Hiển thị toast message lỗi
+                  fire(toast, 'error', response.message);
+                  setTimeout(() => {
+                    location.reload();
+                }, 2000);
+              } else {
+                  // Hiển thị toast message lỗi
+                  fire(toast, 'error', response.message);
+                  // Reload trang sau một khoảng thời gian
+                  setTimeout(() => {
+                      location.reload();
+                  }, 2000);
+              }
+          }).fail((jqXHR, textStatus, errorThrown) => {
+              // Xử lý lỗi khi gọi API
+              console.error('Error:', textStatus, errorThrown);
+              // Ẩn loading
+              $('#loading__js').css('display', 'none');
+              // Hiển thị toast message lỗi
+              fire(toast, 'error', 'Đã xảy ra lỗi khi phục hồi người dùng.');
+          });
+      }
+  });
+});
+
+
 // function init toast message
 function toast() 
 {

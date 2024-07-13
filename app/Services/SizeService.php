@@ -60,6 +60,8 @@ class SizeService
                 'deleteAll'     => true,
                 'delete'        => true,
                 'viewDetail'    => false,
+                'trash'         => false,
+                'restore'       => false,
             ],
             'routes' => [
                 'create' => 'admin.sizes_create',

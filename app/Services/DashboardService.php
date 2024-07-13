@@ -156,6 +156,8 @@ class DashboardService
                 'deleteAll'     => false,
                 'delete'        => true,
                 'viewDetail'    => false,
+                'trash'         => false,
+                'restore'       => false,
             ],
             'routes' => [
                 'delete' => 'admin.orders_delete',
