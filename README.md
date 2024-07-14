@@ -1,167 +1,131 @@
-<p align="center"><a href="https://pharaonic.io" target="_blank"><img src="https://raw.githubusercontent.com/Pharaonic/logos/main/has-files.jpg" width="470"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
-<a href="https://github.com/Pharaonic/laravel-has-files" target="_blank"><img src="http://img.shields.io/badge/source-pharaonic/laravel--has--files-blue.svg?style=flat-square" alt="Source"></a> <a href="https://packagist.org/packages/pharaonic/laravel-has-files" target="_blank"><img src="https://img.shields.io/packagist/v/pharaonic/laravel-has-files?style=flat-square" alt="Packagist Version"></a><br>
-<a href="https://laravel.com" target="_blank"><img src="https://img.shields.io/badge/Laravel->=6.0-red.svg?style=flat-square" alt="Laravel"></a> <img src="https://img.shields.io/packagist/dt/pharaonic/laravel-has-files?style=flat-square" alt="Packagist Downloads"> <img src="http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square" alt="Source">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## About Laravel
 
-#### Laravel files provides a quick and easy way to link files with a model.
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-###### 
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## Learning Laravel
 
-## Install
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-Install the latest version using [Composer](https://getcomposer.org/):
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
 
-```bash
-$ composer require pharaonic/laravel-has-files
-```
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-then publish the migration & config files
-```bash
-# if you didn't publish Pharaonic\laravel-uploader before.
+## Laravel Sponsors
 
-$ php artisan vendor:publish --tag=laravel-uploader
-```
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-```bash
-$ php artisan vendor:publish --tag=laravel-has-files
-$ php artisan migrate
-```
+### Premium Partners
 
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
 
+## Contributing
 
-## Usage
-- [Configuration](#config)
-- [Including it in a Model](#INC)
-- [How to use](#HTU)
-- [Uploader Options](#UP)
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
+## Code of Conduct
 
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-<a name="config"></a>
+## Security Vulnerabilities
 
-#### Configuration
-```php
-/**
-*	config/Pharaonic/files.php
-*	default files fields
-*
-*	files 		=> ['image', 'picture', 'cover', 'thumbnail', 'video', 'audio', 'file']
-*/
-```
-
-
-
-<a name="INC"></a>
-
-#### Including it in a Model
-```php
-// An example
-// Using HasFiles in Person Model
-...
-use Pharaonic\Laravel\Files\HasFiles;
-use Pharaonic\Laravel\Helpers\Traits\HasCustomAttributes;
-
-class Person extends Model
-{
-    use HasCustomAttributes, HasFiles;
-    
-    protected $filesAttributes  = ['passport']; // if not in defaults in config file
-    
-    protected $filesOptions 	= [ // optional
-        'passport'	=> [
-            'private'	=> true,
-            // 'visitable'	=> true,
-            'directory'	=> '/papers/passports'
-        ]
-    ];
-    ...
-}
-```
-
-
-
-<a name="HTU"></a>
-
-#### How to use
-
-```php
-// Retrive Person
-$person = Person::find(1); 		        // Model
-$person->passport = $request->myFile;   // Request Input File + Uploading it
-echo $person->passport->url; 	        // Getting passport file URL
-
-// Create Person
-$person = new Person;
-...
-$person->passport = $request->myFile;
-$person->save();
-echo $person->passport->url;
-
-
-
-// Delete Files
-$person->delete(); 				// Delete Person with all related files
-// OR
-$person->clearFiles();			// Delete all related files
-// OR
-$person->passport->delete();	// Delete file
-
-```
-
-
-
-<a name="UP"></a>
-
-#### Uploader Options
-
-###### $person->passport is retrieving Uploader Object.
-
-###### That's allow for us use all [Pharaonic/laravel-uploader](https://github.com/Pharaonic/laravel-uploader) options.
-
-
-
-```php
-$file = $person->passport;
-```
-```php
-// Information
-echo $file->hash; // File's Hash
-echo $file->name; // File's Name
-echo $file->path; // File's Path
-echo $file->size; // File's Size in Bytes
-echo $file->readableSize(); // File's Readable Size [B, KB, MB, ...] (1000)
-echo $file->readableSize(false); // File's Readable Size [B, KiB, MiB, ...] (1024)
-echo $file->extension; // File's Extension
-echo $file->mime; // File's MIME
-
-echo $file->visits; // File's visits (Visitable File)
-
-
-// Getting URL
-echo $file->url; // Getting Uploaded File's URL
-
-
-// Deleting The File
-$file->delete();
-
-
-// Permits (Private File)
-$permits = $file->permits; // Getting Permits List
-$permitted = $file->isPermitted($user); // Checking if permitted (App\User)
-
-$file->permit($user, '2021-02-01'); // Permitting a user
-$file->forbid($user); // Forbidding a user
-```
-
-
-
-
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
-[MIT license](LICENSE.md)
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
+
+## About Laravel
+
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
+
+## Learning Laravel
+
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+
+You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+
+## Laravel Sponsors
+
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+
+### Premium Partners
+
+- **[Vehikl](https://vehikl.com/)**
+- **[Tighten Co.](https://tighten.co)**
+- **[WebReinvent](https://webreinvent.com/)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
+- **[Cyber-Duck](https://cyber-duck.co.uk)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Jump24](https://jump24.co.uk)**
+- **[Redberry](https://redberry.international/laravel/)**
+- **[Active Logic](https://activelogic.com)**
+- **[byte5](https://byte5.de)**
+- **[OP.GG](https://op.gg)**
+
+## Contributing
+
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+
+## Code of Conduct
+
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+
+## License
+
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
