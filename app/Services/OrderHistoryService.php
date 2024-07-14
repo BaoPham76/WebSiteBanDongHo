@@ -37,16 +37,7 @@ class OrderHistoryService
 
     public function show(Order $order)
     {
-                // 'users.id as user_id',
-        //     'orders.name as order_name',
-        //     'users.email as user_email',
-        //     'orders.phone_number as order_phone_number',
-        //     'orders.city as order_city',
-        //     'orders.district as order_district',
-        //     'orders.ward as order_ward',
-        //     'orders.apartment_number as order_apartment_number',
-        //     'payments.name as payment_name',
-        //     'orders.transport_fee as orders_transport_fee',
+        
         $infoUserOfOrder = $this->orderRepository->getInfoUserOfOrder($order->id);
         $infomationUser['id'] = $infoUserOfOrder->user_id;
         $infomationUser['name'] = $infoUserOfOrder->order_name;

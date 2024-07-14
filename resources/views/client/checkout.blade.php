@@ -130,8 +130,9 @@
                         </div>
                         <div class="info-order">
                           <div class="info__order-box">
-                            <span>Phí vận chuyển</span>
-                            <span id="fee">0</span>
+                            <span>Phí vận chuyển</span>  
+                            <input id="shipping-fee-input" name="shipping_fee" type="hidden" value="0">                      
+                            <span id="fee">0</span>                     
                           </div>
                         </div>
                         {{-- <div class="info-order">

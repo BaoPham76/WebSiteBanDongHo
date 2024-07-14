@@ -18,6 +18,8 @@ $(document).ready(function(){
         getWard();
     });
 });
+
+
 // fucntion get district
 function getProvind()
 {
@@ -62,8 +64,8 @@ function getWard()
 
 function getFee()
 {
-    let shop_id = "3577591";
-    let from_district = "1530";
+    let shop_id = "5191028";
+    let from_district = "3226";
     let to_district = $('#district').val();
     $.ajax({
         type: 'GET',
@@ -74,7 +76,7 @@ function getFee()
             to_district: to_district
         }
     }).done((respones) => {
-        let from_district = "1530";
+        let from_district = "3226";
         let service_type = respones.data[0].service_id;
         let to_district_id = $('#district').val();
         let to_ward_code = $('#ward').val();
@@ -96,11 +98,24 @@ function getFee()
             url: 'https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee',
             data: data
         }).done((respones) => {
-            let fee = parseInt(respones.data.total);
-            let totalProduct = parseInt($('#total-order-input').val());
+
+            // Lấy giá trị phí vận chuyển mới từ response.data.total và tổng sản phẩm từ #total-order-input
+            let fee = parseFloat(respones.data.total);
+
+            // Lấy tổng phí vận chuyển cũ từ #fee (nếu đã được hiển thị)
+            let oldFee = parseInt($('#fee').text().replace(/\D/g, '')); // Loại bỏ các ký tự không phải số
+
+            // Trừ đi phí vận chuyển cũ và cộng phí vận chuyển mới vào tổng đơn hàng
+            let newTotal = (parseInt($('#total-order-input').val()) - oldFee) + fee;
+            let shipFee = fee;
+            // Hiển thị phí vận chuyển mới và tổng đơn hàng mới
             $('#fee').text(new Intl.NumberFormat().format(fee));
-            $('#total-order').text(new Intl.NumberFormat().format(fee + totalProduct));
-            $('#total-order-input').val(fee + totalProduct)
+            $('#total-order').text(new Intl.NumberFormat().format(newTotal));
+            $('#total-order-input').val(newTotal);
+            $('#shipping-fee-input').val(shipFee);
+
+            
         });
     });
+
 }

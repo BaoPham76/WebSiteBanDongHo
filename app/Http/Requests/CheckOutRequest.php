@@ -31,6 +31,8 @@ class CheckOutRequest extends FormRequest
             'district' => 'required|string',
             'ward' => 'required|string',
             'apartment_number' => 'required|string',
+            'shipping_fee' => 'required|numeric|min:0',
+
         ];
     }
     
@@ -52,6 +54,9 @@ class CheckOutRequest extends FormRequest
             'district.required' => 'Không được bỏ trống',
             'ward.required' => 'Không được bỏ trống',
             'apartment_number.required' => 'Không được bỏ trống',
+            'shipping_fee.required' => 'Phí vận chuyển không được bỏ trống',
+            'shipping_fee.numeric' => 'Phí vận chuyển phải là số',
+            'shipping_fee.min' => 'Phí vận chuyển phải lớn hơn hoặc bằng 0',
             
         ];
     }

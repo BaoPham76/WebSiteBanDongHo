@@ -40,18 +40,19 @@ class CheckOutController extends Controller
     {
         // check payment method is momo
         if ($request->payment_method == 2) {
-            return $this->checkOutService->paymentMomo();
+            return $this->checkOutService->paymentMomo($request);
         }
         
         // check payment method is VNPAY
         if ($request->payment_method == 3) {
-            return $this->checkOutService->paymentVNPAY();
+            return $this->checkOutService->paymentVNPAY($request);
         }
         
         return $this->checkOutService->store($request);
     }
 
-    public function callbackMomo(Request $request)
+    public function callbackMomo(Request $request )
+
     {
         return $this->checkOutService->callbackMomo($request);
     }

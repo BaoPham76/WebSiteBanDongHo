@@ -88,7 +88,7 @@ class CheckOutService
     public function store(CheckOutRequest $request)
     {
         try {
-            $fee = $this->getTransportFee()."";
+            $fee = $request->input('shipping_fee');
             $dataOrder = [
                 'id' => time() . mt_rand(111, 999),
                 'payment_id' => $request->payment_method,
@@ -141,66 +141,41 @@ class CheckOutService
         }
     }
 
-    public function paymentMomo() 
+    public function paymentMomo(CheckOutRequest $request) 
     {
+        Session::put('checkout_data', $request->all());
+
         $orderId = time() . mt_rand(111, 999)."";
-        $amount = \Cart::getTotal() + $this->getTransportFee()."";
+        $amount = \Cart::getTotal() + $request->input('shipping_fee');
         $returnUrl = route('checkout.callback_momo');
         $notifyUrl = route('checkout.callback_momo');
+
         return $this->payWithMoMo($orderId, $amount, $returnUrl, $notifyUrl);
     }
 
-    public function getTransportFee()
-    {
-        $fromDistrict = "3226";
-        $shopId = "5191028";
-        $toDistrict = Auth::user()->address->district;
-        $response = Http::withHeaders([
-            'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
-        ])->get('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/available-services', [
-            "shop_id" => $shopId,
-            "from_district" => $fromDistrict,
-            "to_district" => $toDistrict,
-        ]);
-        $serviceId = $response['data'][0]['service_id'];
-        
-        $dataGetFee = [
-            "service_id" => $serviceId,
-            "insurance_value" => 500000,
-            "coupon" => null,
-            "from_district_id" => $fromDistrict,
-            "to_district_id" => Auth::user()->address->district,
-            "to_ward_code" => Auth::user()->address->ward,
-            "height" => 15,
-            "length" => 15,
-            "weight" => 1000,
-            "width" => 15
-        ];
-        $response = Http::withHeaders([
-            'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
-        ])->get('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', $dataGetFee);
 
-        return $response['data']['total'];
-    }
-
-    public function callbackMomo(Request $request)
+    public function callbackMomo(Request $request )
     {
+      
+
+
         try {
             if ($request->resultCode == 0 || $request->vnp_ResponseCode == 00) {
+                $checkoutData = Session::get('checkout_data');
                 $dataOrder = [
                     'id' => $request->orderId ?? $request->vnp_TxnRef,
                     'payment_id' => (isset($request->vnp_TxnRef)) ? Payment::METHOD['vnpay'] : Payment::METHOD['momo'],
                     'user_id' => Auth::user()->id,
                     'total_money' => $request->amount ?? $request->vnp_Amount / 100,
                     'order_status' => Order::STATUS_ORDER['wait'],
-                    'transport_fee' => $this->getTransportFee(),
-                    'note' => null,
-                    'name' => $request->name,
-                    'phone_number' => $request->phone_number,
-                    'city' => $request->city,
-                    'district' => $request->district,
-                    'ward' => $request->ward,
-                    'apartment_number' => $request->apartment_number,
+                    'transport_fee' => $checkoutData['shipping_fee'],
+                    'note' => $checkoutData['note'] ?? null,
+                    'name' => $checkoutData['name'],
+                    'phone_number' => $checkoutData['phone_number'],
+                    'city' => $checkoutData['city'],
+                    'district' => $checkoutData['district'],
+                    'ward' => $checkoutData['ward'],
+                    'apartment_number' => $checkoutData['apartment_number'],
                 ];
                 DB::beginTransaction();
                 $order = $this->orderRepository->create($dataOrder);
@@ -264,7 +239,7 @@ class CheckOutService
         $rawHash = "partnerCode=" . $partnerCode .
             "&accessKey=" . $accessKey . 
             "&requestId=" . $requestId . 
-            "&amount=" . $amount . 
+            "&amount=" . $amount .
             "&orderId=" . $orderId . 
             "&orderInfo=" . $orderInfo . 
             "&orderType=" . $orderType .
@@ -296,7 +271,7 @@ class CheckOutService
         $requestId = time().mt_rand(111, 999)."";
         $requestType = "captureWallet";
         $rawHash = "accessKey=" . $accessKey . 
-            "&amount=" . $amount . 
+            "&amount=" . $amount .
             "&extraData=" . $extraData . 
             "&ipnUrl=" . $ipnUrl . 
             "&orderId=" . $orderId . 
@@ -382,17 +357,20 @@ class CheckOutService
         return redirect($vnp_Url);
     }
 
-    public function paymentVNPAY()
+    public function paymentVNPAY(CheckOutRequest $request)
     {
+        Session::put('checkout_data', $request->all());
+
         $orderId = time() . mt_rand(111, 999)."";
-        $amount = \Cart::getTotal() + $this->getTransportFee()."";
+        $amount = \Cart::getTotal() + $request->input('shipping_fee');
         $returnUrl = route('checkout.callback_vnpay');
         return $this->handlePaymentWithVNPAY($returnUrl, $amount, $orderId);
     }
 
-    public function callbackVNPay($request)
+    public function callbackVNPay(Request $request)
     {
         try {
+            $checkoutData = Session::get('checkout_data');
             //data order
             $dataOrder = [
                 'id' => $request->vnp_TxnRef,
@@ -400,14 +378,14 @@ class CheckOutService
                 'user_id' => Auth::user()->id,
                 'total_money' => $request->vnp_Amount / 100,
                 'order_status' => Order::STATUS_ORDER['wait'],
-                'transport_fee' => $this->getTransportFee(),
-                'note' => null,
-                'name' => $request->name,
-                'phone_number' => $request->phone_number,
-                'city' => $request->city,
-                'district' => $request->district,
-                'ward' => $request->ward,
-                'apartment_number' => $request->apartment_number,
+                'transport_fee' => $checkoutData['shipping_fee'],
+                'note' => $checkoutData['note'] ?? null,
+                'name' => $checkoutData['name'],
+                'phone_number' => $checkoutData['phone_number'],
+                'city' => $checkoutData['city'],
+                'district' => $checkoutData['district'],
+                'ward' => $checkoutData['ward'],
+                'apartment_number' => $checkoutData['apartment_number'],   
             ];
             DB::beginTransaction();
             // create order
