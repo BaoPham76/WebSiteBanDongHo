@@ -154,6 +154,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         ->whereNull('products_color.deleted_at')
         ->count();
     }
+
+    public function findTrashed($id)
+    {
+        return $this->model->onlyTrashed()->find($id);
+    }
+
+    public function restore($product)
+    {
+        return $product->restore();
+    }
 }
 
 ?>

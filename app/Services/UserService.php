@@ -300,7 +300,7 @@ class UserService
 
     public function trash()
     {
-        // Get list customers
+        // Get list customers in trash
         $list = User::onlyTrashed()->get();
         $tableCrud = [
             'headers' => [

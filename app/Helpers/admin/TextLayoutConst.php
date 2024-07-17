@@ -74,7 +74,8 @@ if (!function_exists('TextLayoutTitle')) {
             "edit_product"          => "Chỉnh Sửa Sản Phẩm",
             "edit_payment"          => "Chỉnh Sửa Phương Thức Thanh Toán",
             "user_trash"            => "Danh sách khách hàng đã xóa",
-            "order_trash"            => "Danh sách đơn hàng đã xóa",
+            "order_trash"           => "Danh sách đơn hàng đã xóa",
+            "product_trash"         => "Danh sách sản phẩm đã ẩn",
         ];
         return $const[$index];
     }

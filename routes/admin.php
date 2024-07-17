@@ -63,6 +63,8 @@ Route::middleware(['auth.admin', 'admin.verified'])->group(function () {
         Route::get('update/{product}', [ProductController::class, "edit"])->name('admin.products_edit');
         Route::post('update/{product}', [ProductController::class, "update"])->name('admin.products_update');
         Route::post('delete', [ProductController::class, "delete"])->name('admin.products_delete');
+        Route::get('trash', [ProductController::class, "trash"])->name('admin.products_trash'); //new
+        Route::post('/admin/products/restore', [ProductController::class, 'restore'])->name('admin.products_restore'); //new
         
 
         Route::get('get-categories-by-parent', [ProductController::class, "getCategoryByParent"])->name('admin.category_by_parent');

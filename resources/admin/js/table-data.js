@@ -137,7 +137,6 @@ $(document).on('click', '#restore__js', function(){
           }).done((response) => {
               // Ẩn loading
               $('#loading__js').css('display', 'none');
-
               // Nếu phục hồi thành công
               if (response.status == 'success') {
                   // Hiển thị toast message thành công
@@ -165,10 +164,12 @@ $(document).on('click', '#restore__js', function(){
           }).fail((jqXHR, textStatus, errorThrown) => {
               // Xử lý lỗi khi gọi API
               console.error('Error:', textStatus, errorThrown);
+              console.log('ID cần phục hồi:', id);
+              console.log('URL phục hồi:', url);
               // Ẩn loading
               $('#loading__js').css('display', 'none');
               // Hiển thị toast message lỗi
-              fire(toast, 'error', 'Đã xảy ra lỗi khi phục hồi người dùng.');
+              fire(toast, 'error', 'Đã xảy ra lỗi khi phục hồi.');
           });
       }
   });

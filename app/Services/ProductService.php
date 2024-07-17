@@ -20,6 +20,7 @@ use App\Repository\Eloquent\ColorRepository;
 use App\Repository\Eloquent\ProductRepository;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -106,16 +107,17 @@ class ProductService
                 'create'        => true,
                 'createExcel'   => false,
                 'edit'          => true,
-                'deleteAll'     => true,
+                'deleteAll'     => false,
                 'delete'        => true,
                 'viewDetail'    => false,
-                'trash'         => false,
+                'trash'         => true,
                 'restore'       => false,
             ],
             'routes' => [
                 'create' => 'admin.products_create',
                 'delete' => 'admin.products_delete',
                 'edit' => 'admin.products_edit',
+                'trash' => 'admin.products_trash',
             ],
             'list' => $list,
         ];
@@ -125,6 +127,95 @@ class ProductService
             'tableCrud' => $tableCrud,
         ];
     }
+
+
+    /**
+     * Display a listing of the users.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trash()
+    {
+        $list = Product::onlyTrashed()->get();
+
+        $tableCrud = [
+            'headers' => [
+                [
+                    'text' => 'Mã SP',
+                    'key' => 'id',
+                ],
+                [
+                    'text' => 'Tên SP',
+                    'key' => 'name',
+                ],
+                [
+                    'text' => 'Hình Ảnh',
+                    'key' => 'img',
+                    'img' => [
+                        'url' => 'asset/client/images/products/small/',
+                        'style' => 'width: 100px;'
+                    ],
+                ],
+                [
+                    'text' => 'Danh Mục',
+                    'key' => 'category.name',
+                ],
+                [
+                    'text' => 'Giá',
+                    'key' => 'price_sell',
+                    'format' => true,
+                ],
+            ],
+            'actions' => [
+                'text'          => "Thao Tác",
+                'create'        => false,
+                'createExcel'   => false,
+                'edit'          => false,
+                'deleteAll'     => false,
+                'delete'        => false,
+                'viewDetail'    => false,
+                'trash'         => false,
+                'restore'       => true,
+            ],
+            'routes' => [
+                'restore' => 'admin.products_restore',
+            ],
+            'list' => $list,
+        ];
+
+        return [
+            'title' => TextLayoutTitle("product_trash"),
+            'tableCrud' => $tableCrud,
+        ];
+    }
+
+
+    public function restore(Request $request)
+    {
+        try {
+            $product = $this->productRepository->findTrashed($request->id); // Tìm product đã bị soft delete
+            if (!$product) {
+                return response()->json(['status' => 'error', 'message' => TextSystemConst::NOT_FOUND], 200);
+            }
+
+            if ($this->productRepository->restore($product)) {
+                // Update restored_by with the ID of the authenticated admin
+                $adminId = Auth::guard('admin')->id(); // Assuming 'admin' guard is correctly configured
+                $this->productRepository->update($product, ['restored_by' => $adminId]);
+                
+                return response()->json(['status' => 'success', 'message' => TextSystemConst::RESTORE_SUCCESS], 200);
+                
+            }
+
+            return response()->json(['status' => 'failed', 'message' => TextSystemConst::RESTORE_FAILED], 200);
+        } catch (Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+            return response()->json(['status' => 'error', 'message' => TextSystemConst::SYSTEM_ERROR], 200);
+        }
+    }
+
+
 
     /**
      * Show the form for creating a new user.
