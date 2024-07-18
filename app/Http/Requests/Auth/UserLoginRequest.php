@@ -27,6 +27,7 @@ class UserLoginRequest extends FormRequest
      *
      * @return array
      */
+    //mọi người dùng đều có thể gửi yêu cầu
     public function rules()
     {
         return [
@@ -57,9 +58,14 @@ class UserLoginRequest extends FormRequest
      */
     public function authenticate()
     {
+        //Không giới hạn số lần đăng nhập
         $this->ensureIsNotRateLimited();
+
+        //Lấy thông tin đăng nhập
         $email = $this->email;
         $password = $this->password;
+
+        //tạo mảng $user để xác thực bao gồm  email, mật khẩu, vai trò người dùng, và điều kiện cho deleted_at và email_verified_at
         $user = [
             'email' => $email, 
             'password' => $password, 
@@ -70,12 +76,15 @@ class UserLoginRequest extends FormRequest
             }
         ];
         
+
+        //Sử dụng phương thức attempt của Auth::guard() để thử xác thực thông tin đăng nhập.
         if (! Auth::guard()->attempt($user, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
+        //Nếu xác thực thành công, kiểm tra xem người dùng có bị vô hiệu hóa hay không (active == 0).   
         } elseif (Auth::guard()->attempt($user, $this->boolean('remember')) &&  Auth::guard()->user()->active == 0) {
             RateLimiter::hit($this->throttleKey());
             $disableReason = Auth::guard('admin')->user()->disable_reason;
@@ -84,6 +93,7 @@ class UserLoginRequest extends FormRequest
                 'disable_reason' => trans('auth.locked') . $disableReason,
             ]);
         }
+        //Xóa bỏ giới hạn số lần thử
         RateLimiter::clear($this->throttleKey());
     }
 
@@ -94,6 +104,7 @@ class UserLoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+    //đảm bảo rằng yêu cầu đăng nhập không bị giới hạn số lần thử
     public function ensureIsNotRateLimited()
     {
         if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {

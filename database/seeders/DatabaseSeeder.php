@@ -283,6 +283,10 @@ class DatabaseSeeder extends Seeder
                             Hãy truy cập vào website của chúng tôi để khám phá thêm các sản phẩm đồng hồ đa dạng và phong phú. 
                             Chúng tôi tin rằng, bạn sẽ tìm thấy những sản phẩm ưng ý và phù hợp với phong cách cá nhân của mình.
                         </h5>
+                        <div class="container" style="margin-top: 20px;">
+                            <h2 style="font-family: \'Source Sans Pro\';"><span style="font-family: "Source Sans Pro";" source="" sans="" pro";"="">Địa chỉ cửa hàng</span></h2>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.521541680414!2d106.78436437517327!3d10.84788015787144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175272a49301c55%3A0xde097a8add7a6926!2zOTcgxJAuIE1hbiBUaGnhu4duLCBIaeG7h3AgUGjDuiwgUXXhuq1uIDksIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1721277519467!5m2!1svi!2s" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
                     '
 
                     ],

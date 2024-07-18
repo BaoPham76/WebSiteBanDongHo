@@ -120,6 +120,7 @@
                </div>
             </div>
          </div>
+         {{-- Để content ở đây --}}
          @yield('content-client')
          <div class="clearfix"></div>
          <div class="footer">

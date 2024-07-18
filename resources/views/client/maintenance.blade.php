@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Site is down for maintenance</title>
+        <title>404 - Bảo trì</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style type="text/css">
@@ -20,5 +20,6 @@
             <h1>Website Tạm Thời Bảo Trì</h1>
             <p>{!! setting_website()->notification !!}</p>
         </article>
+        <div><img src="{{ asset('asset/client/images/404.png') }}" alt="" style="width: 350px; height: auto;"></div>
     </body>
 </html>

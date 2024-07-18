@@ -82,6 +82,7 @@ class User extends Authenticatable
      *
      * @var string $value
      */
+    // Hàm băm mã hóa mật khẩu
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
