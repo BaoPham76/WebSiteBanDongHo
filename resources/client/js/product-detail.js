@@ -2,21 +2,18 @@ $(document).ready(function(){
    let sizes = JSON.parse(jQuery('#data-size').attr('data-sizes'))
    let color = $('#data-color').val()
    showSize(color, sizes);
-   //lắng nghe sự thay đổi của màu sắc
+   
+   // Lắng nghe sự thay đổi của màu sắc
    $(document).on('change', '#data-color', function(){
-      //lấy cái id màu sắc thay đổi
       let color = $('#data-color').val()
-      // gọi hàm showSize để hiển thị size và số lượng của size
       showSize(color, sizes);
    })
 
-   // lắng nghe sự thay đổi của size
+   // Lắng nghe sự thay đổi của size
    $(document).on('change', '#data-size', function(){
       let sizes = JSON.parse(jQuery('#data-size').attr('data-sizes'))
-      // lấy cái id kích thước vừa thay đổi
       let productSizeId = $('#data-size').val();
       let dataColor = $('#data-color').val()
-      // duyệt qua mảng kích thước và hiển thị số lượng của kích thước đó
       sizes.forEach(element => {
          if (element.product_color_id == dataColor && element.product_size_id == productSizeId) {
             $('#quantity_remain').text(element.quantity)
@@ -24,7 +21,7 @@ $(document).ready(function(){
       });
    })
 
-   // khi dùng chọn sao thì tô màu
+   // Khi dùng chọn sao thì tô màu
    $(document).on('click', '.star', function(){
          $('.rating label .fa-star').css({
             "color": "#b1b1b1",
@@ -36,10 +33,21 @@ $(document).ready(function(){
             });
          }
    })
- })
 
- function showSize(color, sizes)
- {
+   // Lắng nghe sự kiện click trên ảnh nhỏ
+   $(document).on('click', '.thumbnail', function(event){
+      event.preventDefault();
+      const largeImage = $('#zoom_03');
+      const newSrc = $(this).attr('data-image');
+      const newZoomImage = $(this).attr('data-zoom-image');
+      
+      largeImage.attr('src', newSrc);
+      largeImage.attr('data-zoom-image', newZoomImage);
+   });
+})
+
+function showSize(color, sizes)
+{
    let option = '';
    sizes.forEach(element => {
     if (element.product_color_id == color) {

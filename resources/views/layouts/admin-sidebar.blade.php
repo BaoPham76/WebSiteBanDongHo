@@ -87,21 +87,94 @@
               </a>
             </li>
             @endif
-        
+            @php
+            $isRouteProductManagement = request()->is('admin/categories*') ||
+                                        request()->is('admin/products*') ||
+                                        request()->is('admin/colors*') ||
+                                        request()->is('admin/sizes*') ||
+                                        request()->is('admin/brands*');
+            @endphp
+            <li class="nav-item has-treeview {{ $isRouteProductManagement ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-box"></i>
+                <p>
+                  Quản lý sản phẩm
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  @php
+                      $isRouteUser = request()->is('admin/categories*');
+                  @endphp
+                  <a href="{{ route('admin.category_index') }}" class="nav-link {{ ($isRouteUser) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-th-list"></i>
+                    <p>
+                      {{ TextLayoutSidebar("category") }}
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  @php
+                      $isRouteUser = request()->is('admin/products*');
+                  @endphp
+                  <a href="{{ route('admin.product_index') }}" class="nav-link {{ ($isRouteUser) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-inbox"></i>
+                    <p>
+                      {{ TextLayoutSidebar("product") }}
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  @php
+                      $isRouteUser = request()->is('admin/colors*');
+                  @endphp
+                  <a href="{{ route('admin.colors_index') }}" class="nav-link {{ ($isRouteUser) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-paint-brush"></i>
+                    <p>
+                      {{ TextLayoutSidebar("color") }}
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  @php
+                      $isRouteUser = request()->is('admin/sizes*');
+                  @endphp
+                  <a href="{{ route('admin.sizes_index') }}" class="nav-link {{ ($isRouteUser) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tshirt"></i>
+                    <p>
+                      {{ TextLayoutSidebar("size") }}
+                    </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  @php
+                      $isRouteUser = request()->is('admin/brands*');
+                  @endphp
+                  <a href="{{ route('admin.brands_index') }}" class="nav-link {{ ($isRouteUser) ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-building"></i>
+                    <p>
+                      {{ TextLayoutSidebar("brand") }}
+                    </p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            
+            {{-- nếu người dùng đang đăng nhập là quản trị viên thì hiển thị chức năng này --}}
+            @if (Auth::guard('admin')->user()->role_id == 1)
             <li class="nav-item">
               @php
-                  $isRouteUser = request()->is('admin/products*');
+                  $isRouteUser = request()->is('admin/payments*');
               @endphp
-              <a href="{{ route('admin.product_index') }}" class="nav-link {{ ($isRouteUser) ? 'active' : '' }}">
-                <i class="nav-icon fas fa-inbox"></i>
+              <a href="{{ route('admin.payments_index') }}" class="nav-link {{ ($isRouteUser) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-money-check-alt"></i>
                 <p>
-                  {{ TextLayoutSidebar("product") }}
+                  {{ TextLayoutSidebar("payment_method") }}
                 </p>
               </a>
             </li>
-            
-            
-            
+            @endif
             <li class="nav-item">
               @php
                   $isRouteUser = request()->is('admin/orders*');
@@ -113,7 +186,19 @@
                 </p>
               </a>
             </li>
-  
+            @if (Auth::guard('admin')->user()->role_id == 1)
+              <li class="nav-item">
+                @php
+                    $isRouteUser = request()->is('admin/setting*');
+                @endphp
+                <a href="{{ route('admin.setting_index') }}" class="nav-link {{ ($isRouteUser) ? 'active' : '' }}">
+                  <i class="nav-icon fas fa-cogs"></i>
+                  <p>
+                    {{ TextLayoutSidebar("setting") }}
+                  </p>
+                </a>
+              </li>
+            @endif
             <li class="nav-header">{{ TextLayoutSidebar("infomations") }}</li>
             <li class="nav-item">
               <a href="{{route('admin.profile_change-profile')}}" class="nav-link {{ (Route::is('admin.profile_change-profile')) ? 'active' : '' }}">

@@ -197,15 +197,15 @@ class DatabaseSeeder extends Seeder
                     [
                         'id' => 1,
                         'logo' => 'logo.png',
-                        'name' => 'FlatShop',
-                        'email' => 'FlatShop@gmail.com',
+                        'name' => 'WATCHSTYLE',
+                        'email' => 'WATCHSTYLE@gmail.com',
                         'address' => '97 Đường Man Thiện, Phường Hiệp Phú, Quận 9, TP. Hồ Chí Minh',
                         'phone_number' => '02838.295.258',
                         'maintenance' => 2,
                         'notification' => '<b>WEBSITE tạm thời bảo trì để nâng cấp xin  quay lại sau</b>',
                         'introduction' => '
                         <h3 style="text-align: center;">
-                            <b>GIỚI THIỆU VỀ FLATSHOP</b>
+                            <b>GIỚI THIỆU VỀ WATCHSTYLE</b>
                         </h3>
                         <h5><br></h5>
                         <h5>

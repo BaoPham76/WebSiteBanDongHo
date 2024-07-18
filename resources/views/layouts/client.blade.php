@@ -39,8 +39,8 @@
                   <div class="col-md-2 col-sm-2">
                      <div class="logo">
                         <a href="{{ route('user.home') }}">
-                           <img src="{{ asset("asset/client/images/" . setting_website()->logo) }}" alt="FlatShop">
-                           <h5>FLATSHOP</h5>
+                           <img src="{{ asset("asset/client/images/" . setting_website()->logo) }}" alt="WATCHSTYLE">
+                           <h5>WATCHSTYLE</h5>
                         </a>
                      </div>
                   </div>

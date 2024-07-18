@@ -7,3 +7,13 @@
   .prev-thum{
     width: 100% !important;
   }
+  .preview_image .preview-small img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .thum-image .prev-thum .sub-img img {
+    width: 100%;
+    cursor: pointer;
+  }
+  

@@ -50,7 +50,7 @@
                       @endforeach
                     </select>
                   </x-admin-input-prepend>
-                  <x-admin-input-prepend label="Thời trang" width="auto" col="col-6">
+                  <x-admin-input-prepend label="Phân loại" width="auto" col="col-6">
                     <select class="form-control" name="parent_id" id="parent_id">
                       @foreach ($categoriesParent as $categoryParent)
                           <option value="{{ $categoryParent->id }}">{{ $categoryParent->name }}</option>
@@ -71,6 +71,7 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                       <textarea id="summernote" name="description">
+                        Nhập mô tả sản phẩm mới
                       </textarea>
                     </div>
                   </div>

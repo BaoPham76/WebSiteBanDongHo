@@ -93,7 +93,7 @@ class CategoryService
                 ],
                 [
                     'attribute' => 'parent_id',
-                    'label' => 'Thời Trang',
+                    'label' => 'Phân loại',
                     'type' => 'select',
                     'list' => $categoryParent,
                 ],
@@ -167,7 +167,7 @@ class CategoryService
                 ],
                 [
                     'attribute' => 'parent_id',
-                    'label' => 'Thời Trang',
+                    'label' => 'Phân loại',
                     'type' => 'select',
                     'list' => $categoryParent,
                 ],

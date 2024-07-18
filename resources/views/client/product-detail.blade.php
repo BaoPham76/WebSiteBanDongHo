@@ -30,15 +30,14 @@
                 <ul id="gallery_01" class="prev-thum">
                   @foreach ($productColor as $color)
                     <li class="sub-img">
-                      <a href="#" data-image="{{ asset("asset/client/images/products/small/$color->img") }}" data-zoom-image="{{ asset("asset/client/images/products/small/$color->img") }}">
+                      <a href="#" class="thumbnail" data-image="{{ asset("asset/client/images/products/small/$color->img") }}" data-zoom-image="{{ asset("asset/client/images/products/small/$color->img") }}">
                         <img src="{{ asset("asset/client/images/products/small/$color->img") }}" alt="">
                       </a>
                     </li>
                   @endforeach
                 </ul>
-              
               </div>
-            </div>
+            </div>            
             <div class="products-description">
               <h5 class="name">
                 {{ $product->name }}
