@@ -23,7 +23,7 @@ class ProductDetailService
     /**
      * @var ProductReviewRepository
      */
-    private $productReviewReprository;
+    private $productReviewRepository;
 
     /**
      * ProductService constructor.
@@ -39,7 +39,7 @@ class ProductDetailService
     {
         $this->productRepository = $productRepository;
         $this->productReviewService = $productReviewService;
-        $this->productReviewReprository = $productReviewRepository;
+        $this->productReviewRepository = $productReviewRepository;
     }
 
     /**
@@ -69,7 +69,7 @@ class ProductDetailService
             ->get();
         
         // lấy tổng số lượng sao được đánh giá và thông tin 
-        $ratingsByProduct = $this->productReviewReprository->getRatingByProduct($product->id);
+        $ratingsByProduct = $this->productReviewRepository->getRatingByProduct($product->id);
 
         // thống kê lượt đánh giá
         $ratingStatistics = [
@@ -90,20 +90,15 @@ class ProductDetailService
         }
         $avgRating = count($ratingsByProduct) > 0 ? $totalRating / $totalNumberReview : 5;
 
-        //check if the user is allowed to rate the product
-        $checkReviewProduct = false;
-        if ($this->productReviewService->checkProductReview($product)) {
-            $checkReviewProduct = true;
-        }
 
         //get product reviews by product
-        $productReviews = $this->productReviewReprository->getProductReview($product->id);
+        $productReviews = $this->productReviewRepository->getProductReview($product->id);
 
         //get related products
         $relatedProducts = $this->productRepository->getRelatedProducts($product);
 
         foreach($relatedProducts as $key => $relatedProduct) {
-            $relatedProducts[$key]->avg_rating = $this->productReviewReprository->avgRatingProduct($relatedProduct->id)->avg_rating ?? 0;
+            $relatedProducts[$key]->avg_rating = $this->productReviewRepository->avgRatingProduct($relatedProduct->id)->avg_rating ?? 0;
             $relatedProducts[$key]->sum = $this->productRepository->getQuantityBuyProduct($relatedProduct->id);
         }
         //trả dữ liệu cho controller
@@ -113,7 +108,6 @@ class ProductDetailService
             'productColor' => $productColor,
             'productSize' => $productsize,
             'product' => $product,
-            'checkReviewProduct' => $checkReviewProduct,
             'ratingStatistics' => $ratingStatistics,
             'avgRating' => $avgRating,
             'productReviews' => $productReviews,

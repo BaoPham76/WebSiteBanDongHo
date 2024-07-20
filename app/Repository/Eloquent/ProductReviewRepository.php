@@ -21,57 +21,54 @@ class ProductReviewRepository extends BaseRepository
         parent::__construct($productReview);
     }
 
-
-
-    
-    // trả về số lần mua
-    public function checkUserBuyProduct($productId, $userId)
+    public function exists($orderId, $productId)
     {
-        return DB::select("
-            select count(*) as purchase_count from products 
-            join products_color on products.id = products_color.product_id
-            join products_size on products_color.id = products_size.product_color_id
-            join order_details on order_details.product_size_id = products_size.id
-            join orders on orders.id = order_details.order_id
-            where orders.order_status = 3 and products.id = ? and orders.user_id = ?;
-        ", [$productId, $userId]);
+        return $this->model->where('order_id', $orderId)
+                        ->where('product_id', $productId)
+                        ->exists();
     }
 
-
-
-    // trả về số lần đánh giá mà người dùng đã để lại cho sản phẩm.
-    public function checkUserProductReview($productId, $userId)
-    {
-        return $this->model->where('product_id', $productId)->where('user_id', $userId)->count();
-    }
 
     public function getRatingByProduct($productId)
     {
         return DB::select("
             select count(*) as sum, product_reviews.product_id, product_reviews.rating from products 
             join product_reviews on products.id = product_reviews.product_id 
-            where products.id = $productId
+            where products.id = ?
             and product_reviews.deleted_at is null
             group by product_reviews.product_id, product_reviews.rating
-        ");
+        ", [$productId]);
     }
 
     public function getProductReview($productId)
     {
         return $this->model
-        ->join('products', 'products.id', '=', 'product_reviews.product_id')
-        ->join('users', function ($join) {
-            $join->on('users.id', '=', 'product_reviews.user_id')
-                 ->where('users.active', '=', 1)
-                 ->whereNull('users.deleted_at')
-                 ->whereNull('product_reviews.deleted_at');
-        })
-        ->select('users.name as user_name', 'product_reviews.*')
-        ->where('product_reviews.product_id', '=', $productId)
-        ->orderBy('id', 'desc')
-        ->paginate(ProductReview::PRODUCT_REVIEW_NUMBER_ITEM);
-
+            ->join('products', 'products.id', '=', 'product_reviews.product_id')
+            ->join('orders', 'orders.id', '=', 'product_reviews.order_id')
+            ->join('users', 'users.id', '=', 'orders.user_id') // Join với bảng users
+            ->select('users.name as user_name', 'product_reviews.*')
+            ->where('product_reviews.product_id', '=', $productId)
+            ->whereNull('product_reviews.deleted_at')
+            ->whereNull('orders.deleted_at')
+            ->orderBy('product_reviews.id', 'desc')
+            ->paginate(ProductReview::PRODUCT_REVIEW_NUMBER_ITEM);
     }
+
+    public function getProductReviewInOrder($orderID, $productId)
+    {
+        return $this->model
+            ->join('products', 'products.id', '=', 'product_reviews.product_id')
+            ->join('orders', 'orders.id', '=', 'product_reviews.order_id')
+            ->where('product_reviews.product_id', '=', $productId)
+            ->where('product_reviews.order_id', '=', $orderID)
+            ->whereNull('product_reviews.deleted_at')
+            ->whereNull('orders.deleted_at')
+            ->orderBy('product_reviews.id', 'desc')
+            ->first(); // Dùng first() vì mỗi đơn hàng chỉ có một đánh giá cho sản phẩm đó
+    }
+
+
+
 
     public function avgRatingProduct($productId)
     {
@@ -82,5 +79,3 @@ class ProductReviewRepository extends BaseRepository
         ->first();
     }
 }
-
-?>

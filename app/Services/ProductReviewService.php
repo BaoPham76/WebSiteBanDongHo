@@ -13,60 +13,52 @@ use Illuminate\Support\Facades\Log;
 
 class ProductReviewService 
 {
-    private $productReviewReprository;
+    private $productReviewRepository;
 
-    public function __construct(ProductReviewRepository $productReviewReprository)
+    public function __construct(ProductReviewRepository $productReviewRepository)
     {
-        $this->productReviewReprository = $productReviewReprository;
+        $this->productReviewRepository = $productReviewRepository;
     }
-    
-    public function store(ProductReviewRequest $request, Product $product)
+    public function store(Request $request, Product $product)
     {
         try {
-            $data = $request->validated();
-            if (!$this->checkProductReview($product)){
-                return back()->with('error', "Đánh giá thất bại vì người dùng chưa đủ điều kiện đánh giá.");
+            $data = $request->only('rating', 'content');
+            $orderId = $request->input('order_id'); // Lấy order_id từ request
+            $productId = $product->id; // Lấy product_id từ route parameter
+            
+            // Kiểm tra nếu người dùng đã đánh giá sản phẩm này
+            if ($this->productReviewRepository->exists($orderId, $productId)) {
+                return back()->with('error', 'Bạn đã đánh giá sản phẩm này rồi.');
             }
-            $data['user_id'] = Auth::user()->id;
-            $data['product_id'] = $product->id;
-            $this->productReviewReprository->create($data);
-            return back()->with('success', "Đánh giá sản phẩm thành công");
-        } catch (Exception $e) {
-            Log::error($e);
-            return back()->with('error', TextSystemConst::CREATE_FAILED);
+            
+            // Tạo đánh giá mới
+            $data['order_id'] = $orderId;
+            $data['product_id'] = $productId;
+            $this->productReviewRepository->create($data);
+            
+            return back()->with('success', 'Đánh giá sản phẩm thành công.');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with('error', 'Đánh giá sản phẩm thất bại. Vui lòng thử lại sau.');
         }
     }
-
-    public function checkProductReview(Product $product)
+    public function checkProductReview($orderId, $productId)
     {
-        //Kiểm tra đăng nhập
         if (! Auth::check()) {
-            Log::info('Người dùng chưa đăng nhập.');
             return false;
         }
-        $user = Auth::user();
-        //số lần mua
-        $purchaseCount = $this->productReviewReprository->checkUserBuyProduct($product->id, $user->id)[0]->purchase_count;
-        //số lần đánh giá
-        $reviewCount = $this->productReviewReprository->checkUserProductReview($product->id, $user->id);
-        
-        if ($purchaseCount <= 0) {
-            Log::info('Người dùng chưa mua sản phẩm này.', ['product_id' => $product->id, 'user_id' => $user->id]);
+        if ($this->productReviewRepository->exists($orderId, $productId)) {
             return false;
         }
-        
-        if ($reviewCount >= $purchaseCount) {
-            Log::info('Người dùng đã đánh giá sản phẩm này đủ số lần mua.', ['product_id' => $product->id, 'user_id' => $user->id]);
-            return false;
-        }
-        
         return true;
     }
+
+
 
     public function delete(Request $request)
     {
         try{
-            if($this->productReviewReprository->delete($this->productReviewReprository->find($request->id))) {
+            if($this->productReviewRepository->delete($this->productReviewRepository->find($request->id))) {
                 return response()->json(['status' => 'success', 'message' => TextSystemConst::DELETE_SUCCESS], 200);
             }
 

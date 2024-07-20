@@ -157,47 +157,6 @@
                 <form method="POST" action="{{ route('product_review.store', $product->id) }}">
                   @csrf
                   <div class="row">
-                    @if ($checkReviewProduct)
-                      <div class="col-md-6 col-sm-6">
-                        <div class="form-row">
-                          <label class="review-lable">
-                            Chọn sao cho sản phẩm
-                          </label>
-                          <div class="rating">
-                              <input class="star" type="radio" hidden id="star1" name="rating" value="1" />
-                              <label for="star1" title="Poor" id="icon-star1">
-                                  <i class="fas fa-star"></i>
-                              </label>
-                              <input class="star" type="radio" hidden id="star2" name="rating" value="2" />
-                              <label for="star2" title="Fair" id="icon-star2">
-                                  <i class="fas fa-star"></i>
-                              </label>
-                              <input class="star" type="radio" hidden id="star3" name="rating" value="3" />
-                              <label for="star3" title="Good" id="icon-star3">
-                                  <i class="fas fa-star"></i>
-                              </label>
-                              <input class="star" type="radio" hidden id="star4" name="rating" value="4" />
-                              <label for="star4" title="Very Good" id="icon-star4">
-                                  <i class="fas fa-star"></i>
-                              </label>
-                              <input class="star" type="radio" hidden id="star5" name="rating" value="5" />
-                              <label for="star5" title="Excellent" id="icon-star5">
-                                  <i class="fas fa-star"></i>
-                              </label>
-                          </div>
-                        </div>
-                        <div class="form-row">
-                          <label class="review-lable">
-                            Nội dung đánh giá
-                          </label>
-                          <textarea style="width: 100%;" name="content" rows="7" >
-                          </textarea>
-                        </div>
-                        <div class="form-row">
-                          <input type="submit" value="Đánh Giá" class="button">
-                        </div>
-                      </div>
-                    @endif
                     <div class="col-md-6 col-sm-6">
                       <div class="form-row row">
                         <div class="col-md-5">

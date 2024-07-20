@@ -4,7 +4,24 @@
   .a-hover:hover{
     color:black !important;
   }
+  .rating .fa-star{
+    color: #b1b1b1;
+  }
+  .preview-small{
+    margin-top: unset !important;
+  }
+
+  .quantyti_sold{
+    font-size: 14px !important;
+  }
+
+  .products-description div{
+    font-size: 14px;
+    line-height: 20px;
+  }
 </style>
+
+
 <div class="container_fullwidth">
     <div class="container shopping-cart">
       <div class="row">
@@ -90,11 +107,120 @@
               <th scope="col" class="text-center">{{ $infomation_user['apartment_number'] . ', ' . $infomation_user['ward'] . ', ' . $infomation_user['district'] . ', ' . $infomation_user['city'] }}</th>
             </tr>
           </table>
+
+          {{-- đánh giá --}}
+          @if($isOrderStatusValid)
+          <div class="clearfix">
+              <div class="tab-box">
+                  <div class="title-review">
+                      <ul>
+                          <li>
+                            <h3 class="title">
+                              Đánh giá sản phẩm
+                            </h3>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="tab-content-wrap">
+                      <div class="tab-content">
+                          @foreach($order_details as $order_detail)
+                              @if($checkReviewProduct[$order_detail->product_id])
+                                  <form method="POST" action="{{ route('product_review.store', $order_detail->product_id) }}">
+                                      @csrf
+                                      <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                      <div class="row">
+                                          <div class="col-md-6 col-sm-6">
+                                              <div class="form-row">
+                                                  <label class="review-lable">
+                                                      Chọn sao cho sản phẩm {{ $order_detail->product_name }}
+                                                  </label>
+                                                  <div class="rating">
+                                                    <input class="star" type="radio" hidden id="star1" name="rating" value="1" />
+                                                    <label for="star1" title="Poor" id="icon-star1">
+                                                        <i class="fas fa-star"></i>
+                                                    </label>
+                                                    <input class="star" type="radio" hidden id="star2" name="rating" value="2" />
+                                                    <label for="star2" title="Fair" id="icon-star2">
+                                                        <i class="fas fa-star"></i>
+                                                    </label>
+                                                    <input class="star" type="radio" hidden id="star3" name="rating" value="3" />
+                                                    <label for="star3" title="Good" id="icon-star3">
+                                                        <i class="fas fa-star"></i>
+                                                    </label>
+                                                    <input class="star" type="radio" hidden id="star4" name="rating" value="4" />
+                                                    <label for="star4" title="Very Good" id="icon-star4">
+                                                        <i class="fas fa-star"></i>
+                                                    </label>
+                                                    <input class="star" type="radio" hidden id="star5" name="rating" value="5" />
+                                                    <label for="star5" title="Excellent" id="icon-star5">
+                                                        <i class="fas fa-star"></i>
+                                                    </label>
+                                                </div>
+
+                                              </div>
+                                              <div class="form-row">
+                                                  <label class="review-lable">
+                                                      Nội dung đánh giá
+                                                  </label>
+                                                  <textarea style="width: 100%;" name="content" rows="7"></textarea>
+                                              </div>
+                                              <div class="form-row">
+                                                  <input type="submit" value="Đánh Giá" class="button">
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </form>
+                                  @else
+                                    <div class="tab-content row">
+                                      
+                                        <div class="review__comment-header">
+                                          <div class="row">
+                                            <div class="col-sm-4 review__comment-header--title">
+                                              Sản phẩm
+                                            </div>
+                                            <div class="col-sm-8 review__comment-header--title">
+                                              Nội dung đánh giá
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="review__comment-list" style="padding-top: 30px;">
+                                          <div class="row">
+                                            
+                                              <div class="col-sm-4">
+                                                <span class="review__comment-author">{{$order_detail->product_name}}</span>
+                                                <div class="review__comment-time">
+                                                  <span>{{ $productReviewsInOrder[$order_detail->product_id]->created_at }}</span>
+                                                </div>
+                                              </div>
+                                              <div class="col-sm-8">
+                                                <div class="review__comment-rating">
+                                                  <x-stars number="{{ $productReviewsInOrder[$order_detail->product_id]->rating }}"/>
+                                                </div>
+                                                <div class="review__comment-content">
+                                                  <p>
+                                                    {{ $productReviewsInOrder[$order_detail->product_id]->content }}
+                                                  </p>
+                                                </div>
+                                              </div>
+                                              <div class="col-sm-12 review_comment-line"></div>
+                                          </div>
+                                        </div>
+                                    </div>
+                              @endif
+                          @endforeach
+                      </div>
+                  </div>
+              </div>
+          </div>
+          @endif
+{{-- đánh giá --}}
+
         </div>
       </div>
       <div class="clearfix">
       </div>
     </div>
 </div>
-@vite(['resources/client/css/cart.css'])
+
+@vite(['resources/client/js/order-history-detail.js', 'resources/client/css/product-review.css', 'resources/client/css/cart.css', 'resources/client/css/product-detail.css'])
 @endsection

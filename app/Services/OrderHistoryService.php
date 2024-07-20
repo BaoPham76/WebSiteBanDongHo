@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\ProductSize;
 use App\Repository\Eloquent\OrderRepository;
+use App\Repository\Eloquent\ProductReviewRepository;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -23,10 +24,25 @@ class OrderHistoryService
      *
      * @param OrderRepository $orderRepository
      */
-    public function __construct(OrderRepository $orderRepository)
+
+     /**
+     * @var ProductReviewService
+     */
+
+    /**
+     * ProductService constructor.
+     *
+     * @param ProductRepository $productRepository
+     */
+    private $productReviewRepository;
+    private $productReviewService;
+    public function __construct(OrderRepository $orderRepository, ProductReviewService $productReviewService, ProductReviewRepository $productReviewRepository)
     {
         $this->orderRepository = $orderRepository;
+        $this->productReviewService = $productReviewService;
+        $this->productReviewRepository = $productReviewRepository;
     }
+
 
     public function index()
     {
@@ -46,6 +62,7 @@ class OrderHistoryService
         $infomationUser['apartment_number'] = $infoUserOfOrder->order_apartment_number;
         $infomationUser['payment_name'] = $infoUserOfOrder->payment_name;
         $infomationUser['orders_transport_fee'] = $infoUserOfOrder->orders_transport_fee;
+        $infomationUser['order_status'] = $infoUserOfOrder->order_status;
         $response = Http::withHeaders([
             'token' => '5ba2f299-3fee-11ef-8de7-a6386691fa55'
         ])->get('https://online-gateway.ghn.vn/shiip/public-api/master-data/province');
@@ -78,11 +95,30 @@ class OrderHistoryService
                 $infomationUser['ward'] = $item['NameExtension'][0];
             }
         }
+        
+        // Get order details
+        $orderDetails = $this->orderRepository->getOrderDetail($order->id);
+        
+        // Check if the user is allowed to rate the product
+        $checkReviewProduct = [];
+        foreach ($orderDetails as $orderDetail) {
+            $checkReviewProduct[$orderDetail->product_id] = $this->productReviewService->checkProductReview($order->id, $orderDetail->product_id);
+        }
+        $isOrderStatusValid = $infoUserOfOrder->order_status === 3;
+        
+        $productReviewsInOrder = [];
+        foreach ($orderDetails as $orderDetail) {
+            $productReviewsInOrder[$orderDetail->product_id] = $this->productReviewRepository->getProductReviewInOrder($order->id, $orderDetail->product_id);
+        }
+        
         return [
 
             'order' => $order,
             'infomation_user' => $infomationUser,
-            'order_details' => $this->orderRepository->getOrderDetail($order->id)
+            'order_details' => $this->orderRepository->getOrderDetail($order->id),
+            'checkReviewProduct' => $checkReviewProduct,
+            'isOrderStatusValid' => $isOrderStatusValid,
+            'productReviewsInOrder' => $productReviewsInOrder,
         ];
     }
 

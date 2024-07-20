@@ -82,6 +82,8 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
             'orders.apartment_number as order_apartment_number',
             'payments.name as payment_name',
             'orders.transport_fee as orders_transport_fee',
+            'orders.order_status as order_status',
+            
         )
         ->where('orders.id', $id)
         ->first();

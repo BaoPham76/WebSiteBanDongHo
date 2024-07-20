@@ -25,7 +25,7 @@ class ProductReview extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
+        'order_id',
         'product_id',
         'rating',
         'content'
