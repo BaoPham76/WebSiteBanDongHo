@@ -39,12 +39,15 @@ class ProductReviewService
 
     public function checkProductReview(Product $product)
     {
+        //Kiểm tra đăng nhập
         if (! Auth::check()) {
             Log::info('Người dùng chưa đăng nhập.');
             return false;
         }
         $user = Auth::user();
+        //số lần mua
         $purchaseCount = $this->productReviewReprository->checkUserBuyProduct($product->id, $user->id)[0]->purchase_count;
+        //số lần đánh giá
         $reviewCount = $this->productReviewReprository->checkUserProductReview($product->id, $user->id);
         
         if ($purchaseCount <= 0) {

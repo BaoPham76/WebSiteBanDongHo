@@ -21,17 +21,7 @@ class ProductReviewRepository extends BaseRepository
         parent::__construct($productReview);
     }
 
-    // public function checkUserBuyProduct($productId, $userId)
-    // {
-    //     return DB::select("
-    //         select * from products 
-    //         join products_color on products.id = products_color.product_id
-    //         join products_size on products_color.id = products_size.product_color_id
-    //         join order_details on order_details.product_size_id = products_size.id
-    //         join orders on orders.id = order_details.order_id
-    //         where orders.order_status = 3 and products.id = $productId and orders.user_id = $userId;
-    //     ");
-    // }
+
 
     
     // trả về số lần mua
@@ -47,11 +37,6 @@ class ProductReviewRepository extends BaseRepository
         ", [$productId, $userId]);
     }
 
-    // public function checkUserProductReview($productId, $userId)
-    // {
-    //     return $this->model->join('products', 'products.id', '=', 'product_reviews.product_id')
-    //     ->where('product_reviews.product_id', $productId)->where('product_reviews.user_id', $userId)->count();
-    // }
 
 
     // trả về số lần đánh giá mà người dùng đã để lại cho sản phẩm.
@@ -86,15 +71,6 @@ class ProductReviewRepository extends BaseRepository
         ->orderBy('id', 'desc')
         ->paginate(ProductReview::PRODUCT_REVIEW_NUMBER_ITEM);
 
-        // return DB::select("
-        //     select users.name as user_name, product_reviews.* from products join product_reviews on products.id = product_reviews.product_id
-        //     join users on users.id = product_reviews.user_id
-        //     and users.active = 1
-        //     and product_reviews.deleted_at is null 
-        //     and users.deleted_at is null
-        //     and product_reviews.product_id = $productId
-        //     order by id desc;
-        // ");
     }
 
     public function avgRatingProduct($productId)

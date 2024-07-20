@@ -302,6 +302,7 @@ class ProductService
             request()->img->move(public_path('asset/client/images/products/small'), $imageName);
             $data['img'] = $imageName;
             $product = $this->productRepository->create($data);
+            
             return redirect()->route('admin.products_color', $product->id)->with('success', TextSystemConst::CREATE_SUCCESS);
         } catch (Exception $e) {
             Log::error($e);

@@ -19,9 +19,12 @@ class AdminAuthenticate
     public function handle(Request $request, Closure $next)
     {
         $currentRoute = Route::currentRouteName();
+        //Biến $isVerify kiểm tra xem route hiện tại có phải là admin.user.verify hoặc admin.verify.success không. Nếu đúng thì $isVerify sẽ là true.
         $isVerify = $currentRoute == 'admin.user.verify' ||
             $currentRoute == 'admin.verify.success';
+        //Check admin đăng nhập chưa 
         if (Auth::guard('admin')->check() || $isVerify) {
+            //next sang route tiếp theo, cho phép request chạy qua
             return $next($request);
         }
 
