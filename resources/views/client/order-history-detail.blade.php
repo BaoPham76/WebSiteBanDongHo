@@ -188,9 +188,6 @@
                                             
                                               <div class="col-sm-4">
                                                 <span class="review__comment-author">{{$order_detail->product_name}}</span>
-                                                <div class="review__comment-time">
-                                                  <span>{{ $productReviewsInOrder[$order_detail->product_id]->created_at }}</span>
-                                                </div>
                                               </div>
                                               <div class="col-sm-8">
                                                 <div class="review__comment-rating">

@@ -55,22 +55,25 @@ class SearchService
      */
     public function search(Request $request)
     {
+        // Lấy danh sách các danh mục và thương hiệu
         $categories = Category::where('parent_id', '!=', 0)->get();
         $brands = $this->brandRepository->all();
         
+         // Lấy các tham số tìm kiếm từ request
         $keyword = $request->keyword ?? null;
         $category = $request->category ?? null;
         $minPrice = $request->min_price ?? null;
         $maxPrice = $request->max_price ?? null;
         $brand = $request->brand ?? null;
     
+        // Truy xuất danh sách sản phẩm dựa trên các tham số tìm kiếm
         $products = $this->productRepository->getProductSearch($keyword, $category, $minPrice, $maxPrice, $brand);
         foreach($products as $key => $product) {
             $products[$key]->avg_rating = $this->productReviewRepository->avgRatingProduct($product->id)->avg_rating ?? 0;
             $products[$key]->sum = $this->productRepository->getQuantityBuyProduct($product->id);
         }
 
-        //sort by avg rating
+        // Sắp xếp sản phẩm theo điểm đánh giá trung bình (giảm dần)
         for ($i = 0; $i < count($products) - 1; $i++) {
             for ($j = $i + 1; $j < count($products); $j++) {
                 if ($products[$i]->avg_rating < $products[$j]->avg_rating) {
@@ -81,7 +84,7 @@ class SearchService
             }
         }
 
-        // sort by quantity sold
+        // Sắp xếp sản phẩm theo số lượng bán (giảm dần)
         for ($i = 0; $i < count($products) - 1; $i++) {
             for ($j = $i + 1; $j < count($products); $j++) {
                 if ($products[$i]->sum < $products[$j]->sum) {
@@ -91,6 +94,8 @@ class SearchService
                 }
             }
         }
+        
+        //Trả dữ liệu cho view
         return [
             'contentSearch' => $request->keyword,
             'products' => $products,

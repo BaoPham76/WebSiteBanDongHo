@@ -76,7 +76,10 @@ if (!function_exists('TextLayoutTitle')) {
             "edit_size"             => "Chỉnh Sửa Kích Thước",
             "edit_staff"            => "Chỉnh Sửa Nhân Sự",
             "edit_product"          => "Chỉnh Sửa Sản Phẩm",
-            "edit_payment"          => "Chỉnh Sửa Phương Thức Thanh Toán"
+            "edit_payment"          => "Chỉnh Sửa Phương Thức Thanh Toán",
+            "user_trash"            => "Danh sách người dùng đã xóa",
+            "product_trash"         => "Danh sách sản phẩm đã xóa",
+            "order_trash"           => "Danh sách đơn hàng đã xóa"
         ];
         return $const[$index];
     }

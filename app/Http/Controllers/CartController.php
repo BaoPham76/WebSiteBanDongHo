@@ -22,11 +22,14 @@ class CartController extends Controller
     {
         $this->cartService = $cartService;
     }
+
+    // lấy dữ liệu giỏ hàng từ CartService và trả về view client.cart 
     public function index()
     {
         return view('client.cart', $this->cartService->index());
     }
 
+    //nhận request và gọi cartService->store để thêm sản phẩm vào giỏ hàng
     public function store(Request $request)
     {
         return $this->cartService->store($request);

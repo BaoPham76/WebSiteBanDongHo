@@ -51,12 +51,13 @@ class CheckOutController extends Controller
         return $this->checkOutService->store($request);
     }
 
+    //xử lý callback từ momo sau khi hoàn tất thanh toán
     public function callbackMomo(Request $request )
-
     {
         return $this->checkOutService->callbackMomo($request);
     }
 
+    //xử lý callback từ vnpay sau khi hoàn tất thanh toán
     public function callbackVNPay(Request $request)
     {
         return $this->checkOutService->callbackVNPay($request);

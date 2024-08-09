@@ -1,40 +1,40 @@
-1. Route (Định tuyến)
+--1. Route (Định tuyến)
 File: Được định nghĩa trong routes/web.php hoặc routes/api.php.
 Chức năng: Xác định các URL và phương thức HTTP tương ứng với các hành động trong ứng dụng.
 Giao tiếp: Định tuyến các yêu cầu từ người dùng đến các phương thức xử lý trong Controller.
-2. Controller (Bộ điều khiển)
+--2. Controller (Bộ điều khiển)
 File: Nằm trong thư mục app/Http/Controllers.
 Chức năng: Chứa các phương thức để xử lý logic của ứng dụng, nhận dữ liệu từ yêu cầu và trả về kết quả cho người dùng.
 Giao tiếp: Nhận dữ liệu từ yêu cầu HTTP (request), thực hiện các thao tác xử lý (như lưu vào cơ sở dữ liệu, tính toán,...) và trả về kết quả (view, JSON response,...).
-3. Model (Mô hình)
+--3. Model (Mô hình)
 File: Thường nằm trong app/Models.
 Chức năng: Đại diện cho dữ liệu của ứng dụng và thực hiện các thao tác truy vấn dữ liệu đối với cơ sở dữ liệu.
 Giao tiếp: Thực hiện các câu truy vấn (query) đến cơ sở dữ liệu để lấy, lưu, cập nhật hoặc xóa dữ liệu.
-4. View (Giao diện)
+--4. View (Giao diện)
 File: Nằm trong resources/views.
 Chức năng: Định dạng và hiển thị dữ liệu cho người dùng dưới dạng HTML, CSS, JavaScript.
 Giao tiếp: Nhận dữ liệu từ Controller thông qua các biến và hiển thị cho người dùng qua các trang web.
-5. Route-Controller-Model (RCM)
+--5. Route-Controller-Model (RCM)
 Giao tiếp: Các Route (Định tuyến) xác định các yêu cầu từ người dùng và chuyển hướng đến các phương thức trong Controller.
 Controller (Bộ điều khiển) sử dụng các Model (Mô hình) để truy xuất và xử lý dữ liệu.
 Controller cũng có thể gọi các Service hoặc Repository để tái sử dụng logic và giữ ứng dụng gọn gàng.
-6. Service (Dịch vụ)
+--6. Service (Dịch vụ)
 File: Nằm trong app/Services hoặc các thư mục tương tự.
 Chức năng: Chứa logic xử lý phức tạp, không thuộc về việc truy xuất dữ liệu trực tiếp nhưng đảm bảo tính logic và tái sử dụng của ứng dụng.
 Giao tiếp: Được gọi từ Controller để xử lý các yêu cầu cụ thể, thực hiện các nghiệp vụ phức tạp như xử lý thanh toán, tính toán giỏ hàng, vv.
-7. Repository (Kho dữ liệu)
+--7. Repository (Kho dữ liệu)
 File: Nằm trong app/Repository hoặc các thư mục tương tự.
 Chức năng: Đóng gói các phương thức truy vấn dữ liệu từ cơ sở dữ liệu, cung cấp interface để truy cập dữ liệu một cách trừu tượng hơn.
 Giao tiếp: Được sử dụng bởi Service hoặc Controller để thực hiện các thao tác truy vấn dữ liệu.
-8. Middleware (Trung gian)
+--8. Middleware (Trung gian)
 File: Nằm trong app/Http/Middleware.
 Chức năng: Kiểm tra, xử lý yêu cầu trước khi chúng được chuyển đến Route hoặc Controller, ví dụ như xác thực người dùng, kiểm tra quyền truy cập,...
 Giao tiếp: Thêm tính bảo mật và quản lý yêu cầu trước khi chúng được xử lý bởi các phần mềm chính của ứng dụng.
-9. Notifications (Thông báo)
+--9. Notifications (Thông báo)
 File: Thường nằm trong app/Notifications.
 Chức năng: Xây dựng và gửi các thông báo email, SMS, thông báo trình duyệt,...
 Giao tiếp: Được gọi từ các phương thức trong Controller hoặc Service để gửi thông báo đến người dùng hoặc hệ thống khác.
-10. Migrations
+--10. Migrations
 File: database/Migrations
 Chức năng: quản lý cấu trúc cơ sở dữ liệu, cho phép bạn tạo, sửa đổi và xóa các bảng trong cơ sở dữ liệu của bạn một cách dễ dàng.
 

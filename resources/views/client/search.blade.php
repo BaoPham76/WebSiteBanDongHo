@@ -7,7 +7,7 @@
                 @if (count($products) > 0)
                     Kết quả tìm kiếm cho từ khoá '<span style="color:#f7544a;">{{ $contentSearch }}</span>'
                 @else
-                    Chúng tôi không tìm thấy sản phẩm '<span style="color:#f7544a;">{{ $contentSearch }}</span>' nào       
+                    Không tìm thấy sản phẩm '<span style="color:#f7544a;">{{ $contentSearch }}</span>' nào       
                 @endif
             </h3>
             <form class="row" method="GET">

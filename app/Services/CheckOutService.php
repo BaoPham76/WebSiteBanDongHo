@@ -143,22 +143,20 @@ class CheckOutService
 
     public function paymentMomo(CheckOutRequest $request) 
     {
+        //Lưu dữ liệu đơn hàng vào session để sau này sử dụng
         Session::put('checkout_data', $request->all());
 
         $orderId = time() . mt_rand(111, 999)."";
         $amount = \Cart::getTotal() + $request->input('shipping_fee');
         $returnUrl = route('checkout.callback_momo');
         $notifyUrl = route('checkout.callback_momo');
-
+        //tạo dữ liệu và gửi yêu cầu thanh toán đến Momo
         return $this->payWithMoMo($orderId, $amount, $returnUrl, $notifyUrl);
     }
 
 
     public function callbackMomo(Request $request )
     {
-      
-
-
         try {
             if ($request->resultCode == 0 || $request->vnp_ResponseCode == 00) {
                 $checkoutData = Session::get('checkout_data');

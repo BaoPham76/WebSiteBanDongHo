@@ -26,7 +26,7 @@ class CartService
     public function index()
     {
 
-        return ['carts' => \Cart::getContent()]; //mảng chứa nội dung toàn bộ giỏ hàng
+        return ['carts' => \Cart::getContent()]; //mảng chứa nội dung toàn bộ giỏ hàng, sử dụng thư viện \Cart
     }
 
     public function store(Request $request)
@@ -83,7 +83,7 @@ class CartService
             $request->id,
             [
                 'quantity' => [
-                    'relative' => false,
+                    'relative' => false, //true là số lượng mới + số lượng đang có, false là đặt lại giá trị mới
                     'value' => $request->quantity
                 ],
             ]

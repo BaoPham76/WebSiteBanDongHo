@@ -104,7 +104,7 @@
             </div>
             <!-- /.card -->
           </div>
-          @if ($order->order_status != 3)
+          @if ($order->order_status != 3 && $order->order_status != 2 )
           <div class="action col-md-12 pb-3">
             <button class="btn btn-success" data-toggle="modal" data-target="#modal-lg">Xử Lý Đơn Hàng</button>
           </div>
