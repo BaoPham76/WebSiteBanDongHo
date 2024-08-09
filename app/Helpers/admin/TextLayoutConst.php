@@ -13,6 +13,7 @@ if (!function_exists('TextLayoutSidebar')) {
             "producer"              => "Nhà Sản Xuất",
             "payment"               => "Thanh Toán",
             "customer"              => "Khách Hàng",
+            "staff"                 => "Nhân Viên",
             "discount_code"         => "Mã Giảm Giá",
             "configuration"         => "Cấu Hình Website",
             "setting"               => "Cài Đặt",
@@ -47,6 +48,7 @@ if (!function_exists('TextLayoutTitle')) {
             "producer"              => "Quản Lý Nhà Sản Xuất",
             "payment"               => "Quản Lý Thanh Toán",
             "customer"              => "Quản Lý Khách Hàng",
+            "staff"                 => "Quản Lý Nhân Viên",
             "discount_code"         => "Quản Lý Mã Giảm Giá",
             "setting"               => "Cài Đặt Website",
             "banner"                => "Cài Đặt Banner",
@@ -56,6 +58,7 @@ if (!function_exists('TextLayoutTitle')) {
             "profile"               => "Hồ Sơ Cá Nhân",
             "change_password"       => "Đổi Mật Khẩu",
             "administrators"        => "Quản Lý Nhân Sự",
+            "create_staff"          => "Thêm Mới Nhân Sự",
             "create_product"        => "Thêm Mới Sản Phẩm",
             "create_category"       => "Thêm Mới Danh Mục",
             "edit_category"         => "Chỉnh Sửa Danh Mục",
@@ -71,11 +74,9 @@ if (!function_exists('TextLayoutTitle')) {
             "size"                  => "Quản Lý Kích Thước",
             "create_size"           => "Thêm Mới Kích Thước",
             "edit_size"             => "Chỉnh Sửa Kích Thước",
+            "edit_staff"            => "Chỉnh Sửa Nhân Sự",
             "edit_product"          => "Chỉnh Sửa Sản Phẩm",
-            "edit_payment"          => "Chỉnh Sửa Phương Thức Thanh Toán",
-            "user_trash"            => "Danh sách khách hàng đã xóa",
-            "order_trash"           => "Danh sách đơn hàng đã xóa",
-            "product_trash"         => "Danh sách sản phẩm đã ẩn",
+            "edit_payment"          => "Chỉnh Sửa Phương Thức Thanh Toán"
         ];
         return $const[$index];
     }

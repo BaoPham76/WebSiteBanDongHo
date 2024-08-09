@@ -120,8 +120,7 @@ Route::middleware(['auth.admin', 'admin.verified'])->group(function () {
         Route::post('update/{order}', [OrderController::class, "update"])->name('admin.orders_update');
         Route::post('delete', [OrderController::class, "delete"])->name('admin.orders_delete');
         Route::get('trash', [OrderController::class, "trash"])->name('admin.orders_trash'); //new 1
-        Route::post('restore', [OrderController::class, 'restore'])->name('admin.orders_restore');
-//new 2
+        Route::post('restore', [OrderController::class, 'restore'])->name('admin.orders_restore');//new 2
     });
 
     Route::group(['prefix' => 'sizes'], function(){

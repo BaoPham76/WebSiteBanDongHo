@@ -109,7 +109,7 @@ class AdminService
                 'createExcel'   => false,
                 'edit'          => true,
                 'deleteAll'     => false,
-                'delete'        => true,
+                'delete'        => false,
                 'viewDetail'    => false,
                 'trash'         => false,
                 'restore'       => false,
